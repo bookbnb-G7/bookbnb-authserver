@@ -1,9 +1,9 @@
 import os
 import firebase_admin
 from firebase_admin import auth
-from errors.auth_errors import (RevokedIdTokenError,
-                                ExpiredIdTokenError,
-                                InvalidIdTokenError)
+from app.errors.auth_errors import (RevokedIdTokenError,
+                                    ExpiredIdTokenError,
+                                    InvalidIdTokenError)
 
 class AuthFirebase():
 
@@ -110,5 +110,6 @@ class AuthFake():
         return True
 
 
-auth_service = AuthenticationFirebase() if (
-    os.environ['ENVIRONMENT'] == 'production') else AuthenticationFake()
+auth_service = AuthFirebase() if (
+    os.environ['ENVIRONMENT'] == 'production'
+) else AuthFake()

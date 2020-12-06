@@ -1,4 +1,4 @@
-from services.auth import auth_service
+from app.services.auth import auth_service
 
 def check_token(token):
     if 'x-access-token' in request.headers:

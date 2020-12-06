@@ -12,6 +12,10 @@ Base.metadata.create_all(engine)
 if get_settings().environment == "production":
     firebase_authenticate()
 
+app = FastAPI(
+    title="bookbnb-authserver", description="Especificacion sobre la API del authserver"
+)
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     error = {"error": exc.detail}
@@ -21,10 +25,6 @@ async def http_exception_handler(request, exc):
 async def auth_exception_handler(request, exc):
     error = {"error": exc.detail}
     return JSONResponse(status_code=exc.status_code, content=error)
-
-app = FastAPI(
-    title="bookbnb-authserver", description="Especificacion sobre la API del authserver"
-)
 
 app.include_router(
 	auth_router.router, prefix="/auth", tags=["auth"]
