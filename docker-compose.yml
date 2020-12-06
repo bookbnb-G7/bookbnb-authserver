@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: bookbnb-authserver_web
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    volumes:
+      - ./:/usr/src/app
+
+    ports:
+      - 3000:8080
+
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; 
+             sh docker-entrypoint.dev.sh'
+
+    depends_on:
+      - db # first execute database
+
+    environment:
+      - TESTING=0
+      - FIREBASE_CLIENT_CERT_URL
+      - FIREBASE_CLIENT_EMAIL
+      - FIREBASE_CLIENT_ID
+      - FIREBASE_PRIVATE_KEY
+      - FIREBASE_PRIVATE_KEY_ID
+      - FIREBASE_PROJECT_ID
+      - FIREBASE_STORAGE_BUCKET
+      - ENVIRONMENT=development
+      - DATABASE_URL=sqlite:///./app.db
+
+  db:
+    container_name: bookbnb-authserver_db
+
+    image: postgres:12.1-alpine
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=authserver_db_dev
+
+volumes:
+  postgres_data:

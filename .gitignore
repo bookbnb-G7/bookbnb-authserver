@@ -1,3 +1,9 @@
+# IDE related stuff
+.idea/
+dev.env
+prod.env
+app.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +133,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode
