@@ -9,9 +9,6 @@ from app.api.routes import auth_router
 
 Base.metadata.create_all(engine)
 
-if get_settings().environment == "production":
-    firebase_authenticate()
-
 app = FastAPI(
     title="bookbnb-authserver", description="Especificacion sobre la API del authserver"
 )

@@ -35,4 +35,4 @@ def firebase_authenticate():
             "client_x509_cert_url": os.environ.get("FIREBASE_CLIENT_CERT_URL"),
         }
     )
-    initialize_app(cred, {"storageBucket": storage_bucket})
+    return initialize_app(cred, {"storageBucket": storage_bucket})

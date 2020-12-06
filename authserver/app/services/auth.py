@@ -1,5 +1,5 @@
 import os
-import firebase_admin
+import app.config as config
 from firebase_admin import auth
 from app.errors.auth_errors import (RevokedIdTokenError,
                                     ExpiredIdTokenError,
@@ -8,7 +8,7 @@ from app.errors.auth_errors import (RevokedIdTokenError,
 class AuthFirebase():
 
     def __init__(self):
-        self.firebase_app = firebase_admin.initialize_app()
+        self.firebase_app = config.firebase_authenticate()
 
     def verify_id_token(self, token):
         try:
@@ -110,4 +110,8 @@ class AuthFake():
         return True
 
 
-auth_service = AuthFirebase()
+auth_service = None 
+if (os.environ.get('ENVIRONMENT') == 'production'):
+    auth_service = AuthFirebase()
+else:
+    auth_service = AuthFake()
