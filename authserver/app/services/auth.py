@@ -1,9 +1,9 @@
 import os
 import app.config as config
 from firebase_admin import auth
-from app.errors.auth_errors import (RevokedIdTokenError,
-                                    ExpiredIdTokenError,
-                                    InvalidIdTokenError)
+from app.errors.auth_error import (RevokedIdTokenError,
+                                   ExpiredIdTokenError,
+                                   InvalidIdTokenError)
 
 class AuthFirebase():
     def __init__(self):
@@ -19,6 +19,9 @@ class AuthFirebase():
         except (auth.InvalidIdTokenError, ValueError):
             raise InvalidIdTokenError()
         return user_data
+
+    def create_user(self, email, password):
+        auth.create_user(email=email, password=password)
 
     """
     def update_password(self, email, password):
@@ -40,9 +43,6 @@ class AuthFirebase():
     def delete_user(self, email):
         uid = self._get_uid_with_email(email)
         auth.delete_user(uid)
-
-    def create_user(self, email, password):
-        auth.create_user(email=email, password=password)
 
     def _get_uid_with_email(self, email):
         user_data = auth.get_user_by_email(email)

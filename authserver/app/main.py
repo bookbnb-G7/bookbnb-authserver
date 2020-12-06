@@ -3,7 +3,7 @@ from app.db import Base, engine
 from app.config import get_settings
 from app.config import firebase_authenticate
 from starlette.exceptions import HTTPException
-from app.errors.auth_errors import AuthException
+from app.errors.auth_error import AuthException
 
 from app.api.routes import auth_router 
 
