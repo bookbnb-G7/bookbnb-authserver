@@ -13,6 +13,10 @@ app = FastAPI(
     title="bookbnb-authserver", description="Especificacion sobre la API del authserver"
 )
 
+@app.get("/")
+async def pong():
+    return {"message": "authserver"}
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     error = {"error": exc.detail}

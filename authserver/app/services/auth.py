@@ -6,7 +6,6 @@ from app.errors.auth_errors import (RevokedIdTokenError,
                                     InvalidIdTokenError)
 
 class AuthFirebase():
-
     def __init__(self):
         self.firebase_app = config.firebase_authenticate()
 
@@ -50,7 +49,6 @@ class AuthFirebase():
         uid = user_data.uid
         return uid
     """
-
 
 
 class AuthFake():
