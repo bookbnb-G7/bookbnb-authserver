@@ -110,6 +110,4 @@ class AuthFake():
         return True
 
 
-auth_service = AuthFirebase() if (
-    os.environ['ENVIRONMENT'] == 'production'
-) else AuthFake()
+auth_service = AuthFirebase()
