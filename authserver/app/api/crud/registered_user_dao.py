@@ -20,7 +20,7 @@ class RegisteredUserDAO:
                            .first()
 
         if registerd_user is None:
-            raise NotFoundError("User")
+            raise NotFoundError('User')
 
         return registerd_user.serialize()
 
