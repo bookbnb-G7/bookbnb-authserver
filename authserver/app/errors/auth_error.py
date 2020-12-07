@@ -27,3 +27,9 @@ class InvalidIdTokenError(AuthException):
 	def __init__(self):
 		message = "Invalid token"
 		super().__init__(status_code=400, detail=message)
+
+
+class RevokedApiKeyError(AuthException):
+	def __init__(self):
+		message = "Revoked API key"
+		super().__init__(status_code=400, detail=message)

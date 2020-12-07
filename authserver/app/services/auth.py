@@ -3,13 +3,15 @@ import app.config as config
 from firebase_admin import auth
 from app.errors.auth_error import (RevokedIdTokenError,
                                    ExpiredIdTokenError,
-                                   InvalidIdTokenError)
+                                   InvalidIdTokenError,
+                                   RevokedApiKeyError)
 
-class AuthFirebase():
+class AuthService():
     def __init__(self):
         self.firebase_app = config.firebase_authenticate()
+        self.api_key = '' #os.environ.get('API_KEY')
 
-    def verify_id_token(self, token):
+    def verify_access_token(self, token):
         try:
             user_data = auth.verify_id_token(token)
         except auth.RevokedIdTokenError:
@@ -23,10 +25,22 @@ class AuthFirebase():
     def create_user(self, email, password):
         auth.create_user(email=email, password=password)
 
+    def verify_apy_key(self, api_key):
+        if api_key == self.api_key:
+            return
+
+        raise RevokedApiKeyError()
+
     """
     def update_password(self, email, password):
         uid = self._get_uid_with_email(email)
         auth.update_user(uid, password=password)
+
+    def _get_uid_with_email(self, email):
+        user_data = auth.get_user_by_email(email)
+        uid = user_data.uid
+        return uid
+
 
     def update_email(self, old_email, new_email):
         uid = self._get_uid_with_email(old_email)
@@ -43,15 +57,10 @@ class AuthFirebase():
     def delete_user(self, email):
         uid = self._get_uid_with_email(email)
         auth.delete_user(uid)
-
-    def _get_uid_with_email(self, email):
-        user_data = auth.get_user_by_email(email)
-        uid = user_data.uid
-        return uid
     """
 
 
-class AuthFake():
+class AuthServiceFake():
     def __init__(self):
         self.user_data = {'email': 'lebronjames@gmail.com',
                           'uid': 'E90qRcXZLbP6QdzcrJrn0fmz5Um1'}
@@ -110,6 +119,6 @@ class AuthFake():
 
 auth_service = None 
 if (os.environ.get('ENVIRONMENT') == 'production'):
-    auth_service = AuthFirebase()
+    auth_service = AuthService()
 else:
-    auth_service = AuthFake()
+    auth_service = AuthServiceFake()
