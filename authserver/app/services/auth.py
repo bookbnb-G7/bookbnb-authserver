@@ -116,6 +116,13 @@ class AuthServiceFake():
     def create_user(self, email, password):
         return True
 
+    def verify_apy_key(self, api_key):
+        if api_key == self.api_key:
+            return
+
+        raise RevokedApiKeyError()
+
+
 
 auth_service = None 
 if (os.environ.get('ENVIRONMENT') == 'production'):

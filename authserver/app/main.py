@@ -30,5 +30,5 @@ async def auth_exception_handler(request, exc):
     return JSONResponse(status_code=exc.status_code, content=error)
 
 app.include_router(auth_router.router, prefix="/auth", tags=["auth"])
-app.include_router(user_router.router, prefix="/user", tags=["auth"])
+app.include_router(user_router.router, prefix="/user", tags=["user"])
 
