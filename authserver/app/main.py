@@ -7,7 +7,7 @@ from starlette.exceptions import HTTPException
 from app.errors.auth_error import AuthException
 
 from app.api.routes import auth_router 
-from app.api.router import user_router
+from app.api.routes import user_router
 
 Base.metadata.create_all(engine)
 
