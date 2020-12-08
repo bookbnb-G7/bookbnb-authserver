@@ -22,7 +22,7 @@ async def get_user_uuid(
 async def add_registered_user(
 	payload: RegisteredUserSchema,
 	api_key: Optional[str] = Header(None),
-	x_acces_token: Optional[str] = Header(None)
+	x_access_token: Optional[str] = Header(None)
 ):
 	auth.verify_apy_key(api_key)
 	auth.verify_access_token(x_access_token)
