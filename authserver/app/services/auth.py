@@ -1,15 +1,19 @@
 import os
 
 import app.config as config
-from app.errors.auth_error import (ExpiredIdTokenError, InvalidIdTokenError,
-                                   RevokedApiKeyError, RevokedIdTokenError)
+from app.errors.auth_error import (
+    ExpiredIdTokenError,
+    InvalidIdTokenError,
+    RevokedApiKeyError,
+    RevokedIdTokenError,
+)
 from firebase_admin import auth
 
 
 class AuthService:
     def __init__(self):
         self.firebase_app = config.firebase_authenticate()
-        self.api_key = os.environ.get('API_KEY')
+        self.api_key = os.environ.get("API_KEY")
 
     def verify_access_token(self, token):
         try:
