@@ -9,7 +9,7 @@ from firebase_admin import auth
 class AuthService:
     def __init__(self):
         self.firebase_app = config.firebase_authenticate()
-        self.api_key = ""  # os.environ.get('API_KEY')
+        self.api_key = os.environ.get('API_KEY')
 
     def verify_access_token(self, token):
         try:
