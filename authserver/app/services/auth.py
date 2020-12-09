@@ -1,25 +1,25 @@
 import os
-import app.config as config
-from firebase_admin import auth
-from app.errors.auth_error import (RevokedIdTokenError,
-                                   ExpiredIdTokenError,
-                                   InvalidIdTokenError,
-                                   RevokedApiKeyError)
 
-class AuthService():
+import app.config as config
+from app.errors.auth_error import (ExpiredIdTokenError, InvalidIdTokenError,
+                                   RevokedApiKeyError, RevokedIdTokenError)
+from firebase_admin import auth
+
+
+class AuthService:
     def __init__(self):
         self.firebase_app = config.firebase_authenticate()
-        self.api_key = '' #os.environ.get('API_KEY')
+        self.api_key = ""  # os.environ.get('API_KEY')
 
     def verify_access_token(self, token):
         try:
             user_data = auth.verify_id_token(token)
-        except auth.RevokedIdTokenError:
-            raise RevokedIdTokenError()
-        except auth.ExpiredIdTokenError:
-            raise ExpiredIdTokenError()
-        except (auth.InvalidIdTokenError, ValueError):
-            raise InvalidIdTokenError()
+        except auth.RevokedIdTokenError as e:
+            raise RevokedIdTokenError() from e
+        except auth.ExpiredIdTokenError as e:
+            raise ExpiredIdTokenError() from e
+        except (auth.InvalidIdTokenError, ValueError) as e:
+            raise InvalidIdTokenError() from e
         return user_data
 
     def create_user(self, email, password):
@@ -60,10 +60,12 @@ class AuthService():
     """
 
 
-class AuthServiceFake():
+class AuthServiceFake:
     def __init__(self):
-        self.user_data = {'email': 'lebronjames@gmail.com',
-                          'uid': 'E90qRcXZLbP6QdzcrJrn0fmz5Um1'}
+        self.user_data = {
+            "email": "lebronjames@gmail.com",
+            "uid": "E90qRcXZLbP6QdzcrJrn0fmz5Um1",
+        }
 
         self.expiredToken = False
         self.revokedToken = False
@@ -71,11 +73,11 @@ class AuthServiceFake():
 
     def verify_id_token(self, token):
         if self.revokedToken:
-            raise UserUnauthorizedError(f"Token has been revoked.")
+            raise RevokedIdTokenError()
         if self.expiredToken:
-            raise UserUnauthorizedError(f"Token has expired.")
+            raise ExpiredIdTokenError()
         if self.invalidToken:
-            raise UserUnauthorizedError(f"Token is invalid.")
+            raise InvalidIdTokenError()
         return self.user_data
 
     def update_password(self, email, password):
@@ -123,9 +125,8 @@ class AuthServiceFake():
         raise RevokedApiKeyError()
 
 
-
-auth_service = None 
-if (os.environ.get('ENVIRONMENT') == 'production'):
+auth_service = None
+if os.environ.get("ENVIRONMENT") == "production":
     auth_service = AuthService()
 else:
     auth_service = AuthServiceFake()
