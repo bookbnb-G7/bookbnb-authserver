@@ -1,5 +1,6 @@
-from app.db import Base
 from datetime import datetime
+
+from app.db import Base
 from sqlalchemy import Column, DateTime, Integer, String
 
 
@@ -20,7 +21,7 @@ class RegisteredUser(Base):
     def serialize(self):
         return {
             "uuid": self.uuid,
-            "email": self.email,            
+            "email": self.email,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
         }

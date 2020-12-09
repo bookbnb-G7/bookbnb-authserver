@@ -1,26 +1,25 @@
-from app.model.registered_user import RegisteredUser
 from app.errors.http_error import NotFoundError
+from app.model.registered_user import RegisteredUser
 
 
 class RegisteredUserDAO:
     @classmethod
     def add_new_registered_user(cls, db, registered_user_args):
-        new_registerd_user = Room(email=registerd_user_args.email)
+        new_registerd_user = RegisteredUser(email=registered_user_args.email)
 
         db.add(new_registerd_user)
         db.commit()
 
         return new_registerd_user.serialize()
 
-
     @classmethod
     def get_by_email(cls, db, email):
-        registerd_user = db.query(RegisteredUser)\
-                           .filter(RegisteredUser.email == email)\
-                           .first()
+        registerd_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.email == email).first()
+        )
 
         if registerd_user is None:
-            raise NotFoundError('User')
+            raise NotFoundError("User")
 
         return registerd_user.serialize()
 

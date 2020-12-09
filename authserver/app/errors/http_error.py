@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 
+
 class NotFoundError(HTTPException):
     def __init__(self, item):
         message = f"{item} not found"
