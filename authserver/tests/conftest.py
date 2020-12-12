@@ -2,9 +2,9 @@ import pytest
 import tempfile
 from app.main import app
 from app.db import Base, get_db
-from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture(scope="session", autouse=True)

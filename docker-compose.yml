@@ -21,7 +21,6 @@ services:
       - db # first execute database
 
     environment:
-      - TESTING=0
       - FIREBASE_CLIENT_CERT_URL
       - FIREBASE_CLIENT_EMAIL
       - FIREBASE_CLIENT_ID
@@ -31,6 +30,7 @@ services:
       - FIREBASE_STORAGE_BUCKET
       - ENVIRONMENT=development
       - DATABASE_URL=sqlite:///./app.db
+      - API_KEY=ULTRAMEGAFAKEAPIKEY
 
   db:
     container_name: bookbnb-authserver_db

@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
+
 class RegisteredUserSchema(BaseModel):
-	email: str
+    email: str
+
 
 class RegisteredUserDB(RegisteredUserSchema):
-	uuid: int
+    uuid: int
