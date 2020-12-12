@@ -7,29 +7,30 @@ class AuthException(Exception):
 
 class MissingTokenError(AuthException):
     def __init__(self):
-        message = "Missing token"
+        message = "missing token"
         super().__init__(status_code=400, detail=message)
 
 
 class RevokedIdTokenError(AuthException):
     def __init__(self):
-        message = "Token has been revoked"
+        message = "token has been revoked"
         super().__init__(status_code=401, detail=message)
 
 
 class ExpiredIdTokenError(AuthException):
     def __init__(self):
-        message = "Token has expired"
+        message = "token has expired"
         super().__init__(status_code=401, detail=message)
 
 
 class InvalidIdTokenError(AuthException):
     def __init__(self):
-        message = "Invalid token"
+        message = "invalid token"
         super().__init__(status_code=401, detail=message)
 
 
 class RevokedApiKeyError(AuthException):
     def __init__(self):
-        message = "Revoked API key"
+        message = "revoked API key"
         super().__init__(status_code=401, detail=message)
+

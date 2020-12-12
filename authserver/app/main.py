@@ -1,14 +1,16 @@
-from app.api.routes import auth_router, user_router
-from app.db import Base, engine
-from app.errors.auth_error import AuthException
 from fastapi import FastAPI
+from app.db import Base, engine
+from app.api.routes import auth_router
+from app.api.routes import user_router
+from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
-from starlette.responses import JSONResponse
+from app.errors.auth_error import AuthException
+from app.errors.bookbnb_error import BookbnbException
 
 Base.metadata.create_all(engine)
 
 app = FastAPI(
-    title="bookbnb-authserver", description="Especificacion sobre la API del authserver"
+    title="bookbnb-authserver", description="authserver API"
 )
 
 
@@ -18,13 +20,19 @@ async def pong():
 
 
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
+async def http_exception_handler(_request, exc):
     error = {"error": exc.detail}
     return JSONResponse(status_code=exc.status_code, content=error)
 
 
 @app.exception_handler(AuthException)
-async def auth_exception_handler(request, exc):
+async def auth_exception_handler(_request, exc):
+    error = {"error": exc.detail}
+    return JSONResponse(status_code=exc.status_code, content=error)
+
+
+@app.exception_handler(BookbnbException)
+async def bookbnb_exception_handler(_request, exc):
     error = {"error": exc.detail}
     return JSONResponse(status_code=exc.status_code, content=error)
 

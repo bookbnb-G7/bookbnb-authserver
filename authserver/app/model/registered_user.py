@@ -14,7 +14,7 @@ class RegisteredUser(Base):
     updated_at = Column(DateTime, nullable=False)
 
     def __init__(self, email):
-        self.email = type
+        self.email = email
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
