@@ -6,6 +6,7 @@ from app.api.models.registered_user_model import (RegisteredUserSchema,
 												  RegisteredUserDB)
 router = APIRouter()
 
+
 @router.get('/id', status_code=200)
 async def get_user_uuid(
 	api_key: Optional[str] = Header(None),

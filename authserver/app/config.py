@@ -1,22 +1,5 @@
 import os
-import logging
-from functools import lru_cache
 from firebase_admin import credentials, initialize_app
-from pydantic import BaseSettings
-
-
-log = logging.getLogger(__name__)
-
-
-class Settings(BaseSettings):
-    environment: str = os.getenv("ENVIRONMENT", "dev")
-    testing: bool = bool(os.getenv("TESTING", ""))
-
-
-@lru_cache()
-def get_settings() -> Settings:
-    log.info("Loading config settings from the environment...")
-    return Settings()
 
 
 def firebase_authenticate():

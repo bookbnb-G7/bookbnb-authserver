@@ -1,17 +1,17 @@
 import os
 import app.config as config
 from firebase_admin import auth
-from app.errors.auth_error import (RevokedIdTokenError,
-                                   ExpiredIdTokenError,
-                                   InvalidIdTokenError,
-                                   RevokedApiKeyError)
+from app.errors.auth_error import (RevokedIdTokenError, ExpiredIdTokenError,
+                                   InvalidIdTokenError, RevokedApiKeyError)
 
-class AuthService():
+
+class AuthService:
     def __init__(self):
+        self.api_key = os.environ.get('API_KEY')
         self.firebase_app = config.firebase_authenticate()
-        self.api_key = '' #os.environ.get('API_KEY')
 
-    def verify_access_token(self, token):
+    @staticmethod
+    def verify_access_token(token):
         try:
             user_data = auth.verify_id_token(token)
         except auth.RevokedIdTokenError:
@@ -22,7 +22,8 @@ class AuthService():
             raise InvalidIdTokenError()
         return user_data
 
-    def create_user(self, email, password):
+    @staticmethod
+    def create_user(email, password):
         auth.create_user(email=email, password=password)
 
     def verify_apy_key(self, api_key):
@@ -123,9 +124,8 @@ class AuthServiceFake():
         raise RevokedApiKeyError()
 
 
-
-auth_service = None 
-if (os.environ.get('ENVIRONMENT') == 'production'):
+auth_service = None
+if os.environ.get('ENVIRONMENT') == 'production':
     auth_service = AuthService()
 else:
     auth_service = AuthServiceFake()
