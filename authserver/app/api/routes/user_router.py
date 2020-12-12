@@ -21,7 +21,7 @@ async def get_user_uuid(
     return user
 
 
-@router.post("/registered", response_model=RegisteredUserDB, status_code=200)
+@router.post("/registered", response_model=RegisteredUserDB, status_code=201)
 async def add_registered_user(
     payload: RegisteredUserSchema,
     db: Session = Depends(get_db),
