@@ -1,14 +1,15 @@
 import os
+
 import app.config as config
+from app.errors.auth_error import (ExpiredIdTokenError, InvalidIdTokenError,
+                                   MissingTokenError, RevokedApiKeyError,
+                                   RevokedIdTokenError)
 from firebase_admin import auth
-from app.errors.auth_error import (RevokedIdTokenError, ExpiredIdTokenError,
-                                   InvalidIdTokenError, RevokedApiKeyError,
-                                   MissingTokenError)
 
 
 class AuthService:
     def __init__(self):
-        self.api_key = os.environ.get('API_KEY')
+        self.api_key = os.environ.get("API_KEY")
         self.firebase_app = config.firebase_authenticate()
 
     @staticmethod
@@ -50,7 +51,7 @@ class AuthServiceFake:
         self.revokedToken = False
         self.invalidToken = False
 
-        self.api_key = os.environ.get('API_KEY')
+        self.api_key = os.environ.get("API_KEY")
 
     def verify_access_token(self, token):
         if token is None:
@@ -94,7 +95,7 @@ class AuthServiceFake:
 
 
 auth_service = None
-if os.environ.get('ENVIRONMENT') == 'production':
+if os.environ.get("ENVIRONMENT") == "production":
     auth_service = AuthService()
 else:
     auth_service = AuthServiceFake()

@@ -33,4 +33,3 @@ class RevokedApiKeyError(AuthException):
     def __init__(self):
         message = "revoked API key"
         super().__init__(status_code=401, detail=message)
-
