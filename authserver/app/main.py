@@ -1,17 +1,14 @@
-from fastapi import FastAPI
+from app.api.routes import auth_router, user_router
 from app.db import Base, engine
-from app.api.routes import auth_router
-from app.api.routes import user_router
-from fastapi.responses import JSONResponse
-from starlette.exceptions import HTTPException
 from app.errors.auth_error import AuthException
 from app.errors.bookbnb_error import BookbnbException
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException
 
 Base.metadata.create_all(engine)
 
-app = FastAPI(
-    title="bookbnb-authserver", description="authserver API"
-)
+app = FastAPI(title="bookbnb-authserver", description="authserver API")
 
 
 @app.get("/")

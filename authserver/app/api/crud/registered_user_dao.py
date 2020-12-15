@@ -1,6 +1,6 @@
+from app.errors.bookbnb_error import EmailAlreadyInUseError
 from app.errors.http_error import NotFoundError
 from app.model.registered_user import RegisteredUser
-from app.errors.bookbnb_error import EmailAlreadyInUseError
 
 
 class RegisteredUserDAO:
@@ -8,14 +8,16 @@ class RegisteredUserDAO:
     def add_new_registered_user(cls, db, registered_user_args):
         email = registered_user_args.email
 
-        existent_user = db.query(RegisteredUser)\
-                          .filter(RegisteredUser.email == registered_user_args.email)\
-                          .first()
+        existent_user = (
+            db.query(RegisteredUser)
+            .filter(RegisteredUser.email == registered_user_args.email.lower())
+            .first()
+        )
 
         if existent_user is not None:
             raise EmailAlreadyInUseError(email)
 
-        new_registerd_user = RegisteredUser(email=registered_user_args.email)
+        new_registerd_user = RegisteredUser(email=registered_user_args.email.lower())
 
         db.add(new_registerd_user)
         db.commit()
@@ -24,9 +26,9 @@ class RegisteredUserDAO:
 
     @classmethod
     def get_by_email(cls, db, email):
-        registerd_user = db.query(RegisteredUser)\
-                           .filter(RegisteredUser.email == email)\
-                           .first()
+        registerd_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.email == email).first()
+        )
 
         if registerd_user is None:
             raise NotFoundError("User")
