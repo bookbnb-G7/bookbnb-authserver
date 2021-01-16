@@ -34,3 +34,15 @@ class RegisteredUserDAO:
             raise NotFoundError("User")
 
         return registerd_user.serialize()
+    
+    @classmethod
+    def delete_by_uuid(cls, db, uuid):
+        registerd_user = db.query(RegisteredUser).get(uuid)
+
+        if registerd_user is None:
+            raise NotFoundError("User")
+        
+        db.delete(registerd_user)
+        db.commit()
+
+        return registerd_user.serialize()
