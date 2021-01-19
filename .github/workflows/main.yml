@@ -13,7 +13,8 @@ jobs:
         run: docker exec bookbnb-authserver_web pytest --cov=appserver
       - name: Coveralls
         run: docker exec -e COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} bookbnb-authserver_web coveralls
-
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         
   deploy:
     if: github.ref == 'refs/heads/master'
