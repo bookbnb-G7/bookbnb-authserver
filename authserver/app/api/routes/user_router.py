@@ -34,3 +34,16 @@ async def add_registered_user(
     auth_service.verify_access_token(x_access_token)
     user = RegisteredUserDAO.add_new_registered_user(db, payload)
     return user
+
+
+@router.delete("/registered/{uuid}", response_model=RegisteredUserDB, status_code=200)
+async def delete_registered_user(
+    uuid: int,
+    db: Session = Depends(get_db),
+    api_key: Optional[str] = Header(None),
+    x_access_token: Optional[str] = Header(None),
+):
+    auth_service.verify_apy_key(api_key)
+    auth_service.verify_access_token(x_access_token)
+    user = RegisteredUserDAO.delete_by_uuid(db, uuid)
+    return user
