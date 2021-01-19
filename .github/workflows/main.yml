@@ -10,7 +10,7 @@ jobs:
       - name: build and up
         run: docker-compose up -d --build
       - name: run pytest
-        run: docker exec bookbnb-authserver_web pytest --cov=appserver
+        run: docker exec bookbnb-authserver_web pytest --cov=authserver
       - name: Coveralls
         run: docker exec -e COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} bookbnb-authserver_web coveralls
         env:
