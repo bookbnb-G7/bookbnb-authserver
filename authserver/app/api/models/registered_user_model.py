@@ -7,3 +7,4 @@ class RegisteredUserSchema(BaseModel):
 
 class RegisteredUserDB(RegisteredUserSchema):
     uuid: int
+    blocked: bool
