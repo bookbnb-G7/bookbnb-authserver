@@ -18,7 +18,7 @@ async def get_user(
     api_key: Optional[str] = Header(None)
 ):
     auth_service.verify_api_key(api_key)
-    user = RegisteredUserDAO.get_user(uuid)
+    user = RegisteredUserDAO.get_user(db, uuid)
     return user
 
 
