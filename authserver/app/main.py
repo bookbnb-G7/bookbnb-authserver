@@ -1,4 +1,4 @@
-from app.api.routes import auth_router, user_router
+from app.api.routes import auth_router, user_router, users_router
 from app.db import Base, engine
 from app.errors.auth_error import AuthException
 from app.errors.bookbnb_error import BookbnbException
@@ -50,3 +50,4 @@ async def sql_exception_handler(request, exc):
 
 app.include_router(auth_router.router, prefix="/auth", tags=["auth"])
 app.include_router(user_router.router, prefix="/user", tags=["user"])
+app.include_router(users_router.router, prefix="/users", tags=["users"])
