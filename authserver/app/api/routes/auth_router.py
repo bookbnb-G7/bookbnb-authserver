@@ -1,7 +1,6 @@
 from typing import Optional
-
-from app.services.auth import auth_service
 from fastapi import APIRouter, Header
+from app.services.auth import auth_service
 
 router = APIRouter()
 

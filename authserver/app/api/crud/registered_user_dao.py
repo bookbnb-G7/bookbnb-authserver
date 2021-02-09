@@ -25,6 +25,45 @@ class RegisteredUserDAO:
         return new_registerd_user.serialize()
 
     @classmethod
+    def get_user(cls, db, uuid):
+        registerd_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.uuid == uuid).first()
+        )
+
+        if registerd_user is None:
+            raise NotFoundError("User")
+
+        return registerd_user.serialize()
+
+    @classmethod
+    def block_user(cls, db, uuid):
+        registered_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.uuid == uuid).first()
+        )
+
+        if registered_user is None:
+            raise NotFoundError("User")
+
+        registered_user.block()
+        db.commit()
+
+        return registered_user.serialize()
+
+    @classmethod
+    def unblock_user(cls, db, uuid):
+        registered_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.uuid == uuid).first()
+        )
+
+        if registered_user is None:
+            raise NotFoundError("User")
+
+        registered_user.unblock()
+        db.commit()
+
+        return registered_user.serialize()
+
+    @classmethod
     def get_by_email(cls, db, email):
         registerd_user = (
             db.query(RegisteredUser).filter(RegisteredUser.email == email).first()
