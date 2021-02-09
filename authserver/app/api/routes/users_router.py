@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-@router.get("/users/{uuid}", status_code=200)
+
+@router.get("/{uuid}", status_code=200)
 async def get_user(
     uuid: int,
     db: Session = Depends(get_db),
@@ -21,7 +22,7 @@ async def get_user(
     return user
 
 
-@router.post("/users/{uuid}/unblock", status_code=200)
+@router.post("/{uuid}/block", status_code=200)
 async def block_user(
     uuid: int,
     db: Session = Depends(get_db),
@@ -31,7 +32,8 @@ async def block_user(
     blocked_user = RegisteredUserDAO.block_user(db, uuid)
     return blocked_user
 
-@router.post("/users/{uuid}/unblock", status_code=200)
+
+@router.post("/{uuid}/unblock", status_code=200)
 async def unblock_user(
     uuid: int,
     db: Session = Depends(get_db),

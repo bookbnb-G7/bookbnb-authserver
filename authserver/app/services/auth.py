@@ -33,7 +33,7 @@ class AuthService:
     def create_user(email, password):
         auth.create_user(email=email, password=password)
 
-    def verify_apy_key(self, api_key):
+    def verify_api_key(self, api_key):
         if api_key == self.api_key:
             return
 
@@ -87,7 +87,7 @@ class AuthServiceFake:
     def set_user_data(self, data):
         self.user_data = data
 
-    def verify_apy_key(self, api_key):
+    def verify_api_key(self, api_key):
         if api_key == self.api_key:
             return
 
