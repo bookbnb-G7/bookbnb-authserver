@@ -1,6 +1,7 @@
 import os
 
 import app.config as config
+from app.errors.bookbnb_error import UserNotFoundError
 from app.errors.auth_error import (ExpiredIdTokenError, InvalidIdTokenError,
                                    MissingTokenError, RevokedApiKeyError,
                                    RevokedIdTokenError)
@@ -30,6 +31,22 @@ class AuthService:
         return user_data
 
     @staticmethod
+    def block_user(email):
+        try:
+            user = auth.get_user_by_email(email)
+        except auth.UserNotFoundError as e:
+            raise UserNotFoundError(email) from e
+        auth.update_user(user.uid, disabled=True)
+
+    @staticmethod
+    def unblock_user(email):
+        try:
+            user = auth.get_user_by_email(email)
+        except auth.UserNotFoundError as e:
+            raise UserNotFoundError(email) from e
+        auth.update_user(user.uid, disabled=False)
+
+    @staticmethod
     def create_user(email, password):
         auth.create_user(email=email, password=password)
 
@@ -52,6 +69,12 @@ class AuthServiceFake:
         self.invalidToken = False
 
         self.api_key = os.environ.get("API_KEY")
+
+    def block_user(self, email):
+        return
+
+    def unblock_user(self, email):
+        return
 
     def verify_access_token(self, token):
         if token is None:

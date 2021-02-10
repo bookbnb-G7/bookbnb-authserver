@@ -22,23 +22,35 @@ async def get_user(
     return user
 
 
-@router.post("/{uuid}/block", status_code=200)
+@router.post(
+    "/{uuid}/block", 
+    status_code=200,
+    response_model=RegisteredUserDB
+)
 async def block_user(
     uuid: int,
     db: Session = Depends(get_db),
     api_key: Optional[str] = Header(None)
 ):
     auth_service.verify_api_key(api_key)
+    user = RegisteredUserDAO.get_user(db, uuid)
+    auth_service.block_user(user.email)
     blocked_user = RegisteredUserDAO.block_user(db, uuid)
     return blocked_user
 
 
-@router.post("/{uuid}/unblock", status_code=200)
+@router.post(
+    "/{uuid}/unblock", 
+    status_code=200,
+    response_model=RegisteredUserDB
+)
 async def unblock_user(
     uuid: int,
     db: Session = Depends(get_db),
     api_key: Optional[str] = Header(None)
 ):
     auth_service.verify_api_key(api_key)
+    user = RegisteredUserDAO.get_user(db, uuid)
+    auth_service.unblock_user(user.email)
     unblocked_user = RegisteredUserDAO.unblock_user(db, uuid)
     return unblocked_user
