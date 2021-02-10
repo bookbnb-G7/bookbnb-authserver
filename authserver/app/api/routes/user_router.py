@@ -17,7 +17,7 @@ async def get_user_uuid(
     api_key: Optional[str] = Header(None),
     x_access_token: Optional[str] = Header(None),
 ):
-    auth_service.verify_apy_key(api_key)
+    auth_service.verify_api_key(api_key)
     user_data = auth_service.verify_access_token(x_access_token)
     user = RegisteredUserDAO.get_by_email(db, user_data["email"])
     return user
@@ -30,7 +30,7 @@ async def add_registered_user(
     api_key: Optional[str] = Header(None),
     x_access_token: Optional[str] = Header(None),
 ):
-    auth_service.verify_apy_key(api_key)
+    auth_service.verify_api_key(api_key)
     auth_service.verify_access_token(x_access_token)
     user = RegisteredUserDAO.add_new_registered_user(db, payload)
     return user
@@ -43,7 +43,7 @@ async def delete_registered_user(
     api_key: Optional[str] = Header(None),
     x_access_token: Optional[str] = Header(None),
 ):
-    auth_service.verify_apy_key(api_key)
+    auth_service.verify_api_key(api_key)
     auth_service.verify_access_token(x_access_token)
     user = RegisteredUserDAO.delete_by_uuid(db, uuid)
     return user

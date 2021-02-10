@@ -9,3 +9,9 @@ class EmailAlreadyInUseError(BookbnbException):
     def __init__(self, email):
         message = f"email {email} already in use"
         super().__init__(status_code=200, detail=message)
+
+
+class UserNotFoundError(BookbnbException):
+    def _init_(self, email):
+        message = f"user with {email} not found"
+        super()._init_(status_code=404, detail=message)

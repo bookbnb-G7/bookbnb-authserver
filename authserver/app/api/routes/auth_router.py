@@ -10,6 +10,6 @@ async def sign_in(
     api_key: Optional[str] = Header(None),
     x_access_token: Optional[str] = Header(None),
 ):
-    auth_service.verify_apy_key(api_key)
+    auth_service.verify_api_key(api_key)
     auth_service.verify_access_token(x_access_token)
     return {"message": "ok"}
