@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get("/ping")
 async def pong():
     return {"message": "authserver"}
 
