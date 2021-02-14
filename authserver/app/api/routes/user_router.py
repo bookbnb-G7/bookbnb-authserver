@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
+# Expects an x-access-token of a registered user and returns
+# a RegisteredUserDB json ({uuid, email, blocked, created_at, updated_at})
 @router.get("/id", status_code=200)
 async def get_user_uuid(
     db: Session = Depends(get_db),
@@ -23,6 +25,9 @@ async def get_user_uuid(
     return user
 
 
+# Expects an x-access-token and the email of a user that exists in firebase and
+# to create it in the authserver database and generate a new uuid
+# It returns RegisteredUserDB json ({uuid, email, blocked, created_at, updated_at})
 @router.post("/registered", response_model=RegisteredUserDB, status_code=201)
 async def add_registered_user(
     payload: RegisteredUserSchema,
@@ -32,10 +37,13 @@ async def add_registered_user(
 ):
     auth_service.verify_api_key(api_key)
     auth_service.verify_access_token(x_access_token)
-    user = RegisteredUserDAO.add_new_registered_user(db, payload)
+    user = RegisteredUserDAO.add_new_registered_user(db, payload, False)
     return user
 
 
+# Expects an x-access-token of a user that exists in firebase and
+# deletes it from the authserver database
+# It returns RegisteredUserDB json ({uuid, email, blocked, created_at, updated_at})
 @router.delete("/registered/{uuid}", response_model=RegisteredUserDB, status_code=200)
 async def delete_registered_user(
     uuid: int,

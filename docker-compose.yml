@@ -28,6 +28,7 @@ services:
       - ENVIRONMENT=development
       - DATABASE_URL=sqlite:///./app.db
       - API_KEY=ULTRAMEGAFAKEAPIKEY
+      - ADMIN_EMAIL=admin@admin.com
 
   db:
     container_name: bookbnb-authserver_db

@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
+# Returns the user information that corresponds with the uuid
 @router.get("/{uuid}", status_code=200)
 async def get_user(
     uuid: int,
@@ -22,6 +23,7 @@ async def get_user(
     return user
 
 
+# The user with the uuid received changes it's blocked attribute to True
 @router.post(
     "/{uuid}/block", 
     status_code=200,
@@ -39,6 +41,7 @@ async def block_user(
     return blocked_user
 
 
+# The user with the uuid received changes it's blocked attribute to False
 @router.post(
     "/{uuid}/unblock", 
     status_code=200,

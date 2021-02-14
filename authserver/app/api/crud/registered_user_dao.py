@@ -5,7 +5,7 @@ from app.model.registered_user import RegisteredUser
 
 class RegisteredUserDAO:
     @classmethod
-    def add_new_registered_user(cls, db, registered_user_args):
+    def add_new_registered_user(cls, db, registered_user_args, is_admin):
         email = registered_user_args.email
 
         existent_user = (
@@ -17,7 +17,7 @@ class RegisteredUserDAO:
         if existent_user is not None:
             raise EmailAlreadyInUseError(email)
 
-        new_registerd_user = RegisteredUser(email=registered_user_args.email.lower())
+        new_registerd_user = RegisteredUser(email=registered_user_args.email.lower(), is_admin=is_admin)
 
         db.add(new_registerd_user)
         db.commit()
@@ -73,14 +73,35 @@ class RegisteredUserDAO:
             raise NotFoundError("User")
 
         return registerd_user.serialize()
-    
+
+    @classmethod
+    def get_admin_by_email(cls, db, email):
+        registerd_user = (
+            db.query(RegisteredUser).filter(RegisteredUser.is_admin == True).filter(RegisteredUser.email == email).first()
+        )
+
+        if registerd_user is None:
+            raise NotFoundError("User")
+
+        return registerd_user.serialize()
+
+    @classmethod
+    def get_all_admins(cls, db):
+        admins = db.query(RegisteredUser).filter(RegisteredUser.is_admin == True).all()
+
+        serialized_list = []
+        for admin in admins:
+            serialized_list.append(admin.serialize())
+
+        return serialized_list
+
     @classmethod
     def delete_by_uuid(cls, db, uuid):
         registerd_user = db.query(RegisteredUser).get(uuid)
 
         if registerd_user is None:
             raise NotFoundError("User")
-        
+
         db.delete(registerd_user)
         db.commit()
 
