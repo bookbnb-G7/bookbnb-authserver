@@ -14,6 +14,8 @@ header = {"api-key": API_KEY, "x-access-token": X_ACCESS_TOKEN}
 
 
 def test_logged_user(test_app):
+    auth_service.set_valid_token()
+
     response = test_app.post(url="/auth/sign-in", headers=header)
 
     assert response.status_code == 200
